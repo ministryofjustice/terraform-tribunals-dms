@@ -7,7 +7,7 @@ provider "aws" {
 
 resource "aws_dms_endpoint" "source" {
   database_name               = var.source_db_name
-  endpoint_id                 = "tf-tribunals-${var.application_name}-${var.environment}"
+  endpoint_id                 = "tf-tribunals-${var.application_name}-source-${var.environment}"
   endpoint_type               = "source"
   engine_name                 = "sqlserver"
   password                    = var.dms_source_db_password
@@ -22,7 +22,7 @@ resource "aws_dms_endpoint" "target" {
   depends_on = [var.db_instance]
 
   database_name               = var.target_db_name
-  endpoint_id                 = "tf-tribunals-${var.application_name}-${var.environment}"
+  endpoint_id                 = "tf-tribunals-${var.application_name}-target-${var.environment}"
   endpoint_type               = "target"
   engine_name                 = "sqlserver"
   password                    = var.db_password
