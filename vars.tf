@@ -50,3 +50,7 @@ variable "source_db_name"{
 
 variable "target_db_name"{ 
 }
+
+variable "environment" {
+  type = string 
+}
