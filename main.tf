@@ -1,7 +1,7 @@
 provider "aws" {
   region     = var.region
-  access_key = var.dms_target_account_access_key
-  secret_key = var.dms_target_account_secret_key
+  access_key = var.dms_source_account_access_key
+  secret_key = var.dms_source_account_secret_key
   alias   = "mojdsd"
 }
 

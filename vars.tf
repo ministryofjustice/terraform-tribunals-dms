@@ -30,12 +30,12 @@ variable "region" {
     description = "AWS Region"
 }
 
-variable "dms_target_account_access_key" {
-    description = "dms target database access key"
+variable "dms_source_account_access_key" {
+    description = "dms source database access key"
 }
 
-variable "dms_target_account_secret_key" {
-    description = "dms target database secret key"
+variable "dms_source_account_secret_key" {
+    description = "dms source database secret key"
 }
 
 variable "db_instance"{
