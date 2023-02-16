@@ -90,7 +90,8 @@ resource "aws_security_group" "dms_access_rule" {
     command =  "chmod +x ./setup-security-group.sh; ./setup-security-group.sh"
 
     environment = {
-      DMS_SECURITY_GROUP = aws_security_group.dms_access_rule.id
+      DMS_SECURITY_GROUP  = aws_security_group.dms_access_rule.id
+      EC2_INSTANCE_ID     = var.ec2_instance_id
     }
   }
   triggers = {

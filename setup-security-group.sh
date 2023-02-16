@@ -2,4 +2,13 @@
 
 source ./connect-to-aws.sh
 
-# aws rds modify-db-instance --db-instance-identifier postgresql-staging --vpc-security-group-ids sg-08244ba362f922899 sg-0e0f5cf0883f81945 sg-04e9fe073afcc6b65 ${DMS_SECURITY_GROUP}
+#retrieve existing security groups 
+aws ec2 describe-instances --instance-ids ${EC2_INSTANCE_ID} --profile dts-legacy-apps-user --query "Reservations[].Instances[].SecurityGroups[].GroupId" > security_groups
+
+existing_group_ids="$(sed 's/[^a-zA-Z0-9-]//g' security_groups)"
+echo existing group ids : $existing_group_ids
+echo DMS security group id : ${DMS_SECURITY_GROUP}
+aws ec2 modify-instance-attribute --instance-id ${EC2_INSTANCE_ID} --groups $existing_group_ids ${DMS_SECURITY_GROUP}
+
+aws ec2 describe-instances --instance-ids ${EC2_INSTANCE_ID} --profile dts-legacy-apps-user --query "Reservations[].Instances[].SecurityGroups[].GroupId" > security_groups
+cat security_groups

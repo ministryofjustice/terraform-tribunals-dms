@@ -54,3 +54,6 @@ variable "target_db_name"{
 variable "environment" {
   type = string 
 }
+
+variable "ec2_instance_id"{ 
+}
