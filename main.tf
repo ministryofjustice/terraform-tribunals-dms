@@ -1,9 +1,9 @@
-provider "aws" {
-  region     = var.region
-  access_key = var.dms_source_account_access_key
-  secret_key = var.dms_source_account_secret_key
-  alias   = "mojdsd"
-}
+# provider "aws" {
+#   region     = var.region
+#   access_key = var.dms_source_account_access_key
+#   secret_key = var.dms_source_account_secret_key
+#   alias   = "mojdsd"
+# }
 
 resource "aws_dms_endpoint" "source" {
   database_name               = var.source_db_name
@@ -46,8 +46,8 @@ resource "aws_dms_replication_instance" "replication-instance" {
 }
 
 resource "aws_dms_replication_task" "migration-task" {
-  depends_on = [null_resource.setup_target_rds_security_group, var.db_instance, aws_dms_endpoint.target, aws_dms_endpoint.source, aws_dms_replication_instance.replication-instance]
-  #depends_on = [var.db_instance, aws_dms_endpoint.target, aws_dms_endpoint.source, aws_dms_replication_instance.replication-instance]
+  #depends_on = [null_resource.setup_target_rds_security_group, var.db_instance, aws_dms_endpoint.target, aws_dms_endpoint.source, aws_dms_replication_instance.replication-instance]
+  depends_on = [var.db_instance, aws_dms_endpoint.target, aws_dms_endpoint.source, aws_dms_replication_instance.replication-instance]
 
   migration_type            = "full-load-and-cdc"
   replication_instance_arn  = aws_dms_replication_instance.replication-instance.replication_instance_arn
@@ -59,42 +59,42 @@ resource "aws_dms_replication_task" "migration-task" {
   start_replication_task = true
 }
 
-resource "aws_security_group" "dms_access_rule" {
-  name = "dms_access_rule"
-  description = "allow dms access to the database"
+# resource "aws_security_group" "dms_access_rule" {
+#   name = "dms_access_rule"
+#   description = "allow dms access to the database"
 
-  ingress {
-    from_port   = 1433
-    to_port     = 1433
-    protocol    = "tcp"
-    description = "Allow DMS to connect to source database"
-    cidr_blocks = [var.dms_replication_instance]
-  }
+#   ingress {
+#     from_port   = 1433
+#     to_port     = 1433
+#     protocol    = "tcp"
+#     description = "Allow DMS to connect to source database"
+#     cidr_blocks = [var.dms_replication_instance]
+#   }
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+#   egress {
+#     from_port   = 0
+#     to_port     = 0
+#     protocol    = "-1"
+#     cidr_blocks = ["0.0.0.0/0"]
+#   }
 
-  provider = aws.mojdsd
+#   provider = aws.mojdsd
 
- }
+#  }
 
- resource "null_resource" "setup_target_rds_security_group" {
-  depends_on = [aws_dms_replication_instance.replication-instance]
+#  resource "null_resource" "setup_target_rds_security_group" {
+#   depends_on = [aws_dms_replication_instance.replication-instance]
 
-  provisioner "local-exec" {
-    interpreter = ["bash", "-c"]
-    command = "ifconfig -a; chmod +x ./setup-security-group.sh; ./setup-security-group.sh"   
+#   provisioner "local-exec" {
+#     interpreter = ["bash", "-c"]
+#     command = "ifconfig -a; chmod +x ./setup-security-group.sh; ./setup-security-group.sh"   
 
-    environment = {
-      DMS_SECURITY_GROUP  = aws_security_group.dms_access_rule.id
-      EC2_INSTANCE_ID     = var.ec2_instance_id
-    }
-  }
-  triggers = {
-    always_run = "${timestamp()}"
-  }
-}
+#     environment = {
+#       DMS_SECURITY_GROUP  = aws_security_group.dms_access_rule.id
+#       EC2_INSTANCE_ID     = var.ec2_instance_id
+#     }
+#   }
+#   triggers = {
+#     always_run = "${timestamp()}"
+#   }
+# }
