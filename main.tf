@@ -1,9 +1,9 @@
-# provider "aws" {
-#   region     = var.region
-#   access_key = var.dms_source_account_access_key
-#   secret_key = var.dms_source_account_secret_key
-#   alias   = "mojdsd"
-# }
+provider "aws" {
+  region     = var.region
+  access_key = var.dms_source_account_access_key
+  secret_key = var.dms_source_account_secret_key
+  alias   = "mojdsd"
+}
 
 resource "aws_dms_endpoint" "source" {
   database_name               = var.source_db_name
