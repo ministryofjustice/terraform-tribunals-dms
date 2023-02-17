@@ -30,14 +30,6 @@ variable "region" {
     description = "AWS Region"
 }
 
-variable "dms_source_account_access_key" {
-    description = "dms source database access key"
-}
-
-variable "dms_source_account_secret_key" {
-    description = "dms source database secret key"
-}
-
 variable "db_instance"{
   description = "rds database instance"
 }
@@ -53,7 +45,4 @@ variable "target_db_name"{
 
 variable "environment" {
   type = string 
-}
-
-variable "ec2_instance_id"{ 
 }
